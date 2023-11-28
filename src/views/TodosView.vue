@@ -1,11 +1,27 @@
 <script setup lang="ts">
-import TodoCreator from '../components/TodoCreator.vue'
+import { ref } from 'vue';
+import { uid } from 'uid';
+import TodoCreator from '@/components/TodoCreator.vue';
+
+const todoList = ref<Object[]>([])
+const listenerTodo = (todo: string) => {
+  console.log("WOI ADA EMIT COK", todo)
+  todoList.value.push({
+    id: uid(),
+    todo: todo,
+    isCompleted: null,
+    isEditing: null,
+
+  })
+  console.log("LIST BARU", todoList.value)
+}
+
 </script>
 
 <template>
   <main>
     <h1>Create Todo</h1>
-    <TodoCreator />
+    <TodoCreator @create-todo="listenerTodo" />
   </main>
 </template>
 

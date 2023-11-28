@@ -1,0 +1,5 @@
+1. Should I use v-if or v-show?
+The answer is: it depends. If you have a component that is expensive to render, you might want to use v-if to only render it 
+when it is needed. If you have a component that is cheap to render, you might want to use v-show to toggle it on and off.
+V-show will always render the component, but it will toggle the CSS display property to hide it. V-if will only render the
+component if the expression is true. If the expression is false, it will remove the component from the DOM.
