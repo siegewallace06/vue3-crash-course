@@ -18,6 +18,20 @@ const listenerTodo = (todo: string) => {
   console.log("LIST BARU", todoList.value)
 }
 
+const toggleTodoComplete = (index: number) => {
+  todoList.value[index].isCompleted = !todoList.value[index].isCompleted
+}
+const toggleEditTodo = (index: number) => {
+  todoList.value[index].isEditing = !todoList.value[index].isEditing
+}
+const updateTodo = (todo: string, index: number) => {
+  todoList.value[index].todo = todo
+  todoList.value[index].isEditing = false
+}
+const deleteTodo = (id: string) => {
+  todoList.value = todoList.value.filter((todo) => todo.id !== id)
+}
+
 </script>
 
 <template>
@@ -25,7 +39,8 @@ const listenerTodo = (todo: string) => {
     <h1>Create Todo</h1>
     <TodoCreator @create-todo="listenerTodo" />
     <ul class="todo-list" v-if="todoList.length > 0">
-      <TodoItems v-for="todo in todoList" :key="todo.id" :todo="todo" />
+      <TodoItems v-for="(todo, index) in todoList" :index="index" :todo="todo" @toggle-complete="toggleTodoComplete"
+        @edit-todo="toggleEditTodo" @update-todo="updateTodo" @delete-todo="deleteTodo" />
     </ul>
     <p class="todos-msg" v-else>
       <!-- When No Todo is showing -->
