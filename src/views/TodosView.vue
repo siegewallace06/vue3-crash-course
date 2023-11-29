@@ -54,10 +54,11 @@ const updateTodo = (todo: string, index: number) => {
   todoList.value[index].isEditing = false
 
 }
-const deleteTodo = (id: string) => {
-  todoList.value = todoList.value.filter((todo) => todo.id !== id)
-
-}
+const deleteTodo = (todo) => {
+  todoList.value = todoList.value.filter(
+    (todoFilter) => todoFilter.id !== todo.id
+  );
+};
 
 </script>
 
