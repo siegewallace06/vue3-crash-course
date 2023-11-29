@@ -1,5 +1,6 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive } from 'vue';
+import TodoButton from '@/components/TodoButton.vue';
 // const todo = ref("")
 const todoState = reactive({
     todo: "",
@@ -27,7 +28,8 @@ console.log(todoState)
 <template>
     <div class="input-wrap" :class="{ 'input-err': todoState.invalid }">
         <input type="text" v-model="todoState.todo" />
-        <button @click="createTodo()">Create</button>
+        <!-- <button @click="createTodo()">Create</button> -->
+        <TodoButton @click="createTodo()"> Create! </TodoButton>
 
     </div>
     <!-- <p v-if="todoState.invalid" class="err-msg">{{ todoState.error }}</p> -->
