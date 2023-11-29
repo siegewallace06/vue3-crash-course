@@ -1,11 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { uid } from 'uid';
 import TodoCreator from '@/components/TodoCreator.vue';
 import TodoItems from '@/components/TodoItems.vue';
 import { Icon } from '@iconify/vue';
 
 const todoList = ref<Object[]>([])
+watch(todoList, () => {
+  setTodoListLocalStorage()
+  console.log("Ada perubahan di todoList", todoList.value)
+}, { deep: true })
+
+const todoCompleted = computed(() => {
+  return todoList.value.every((todo) => todo.isCompleted)
+})
+
+
+const fetchTodoListLocalStorage = () => {
+  const todoListLocalStorage = localStorage.getItem("todoList")
+  if (todoListLocalStorage) {
+    todoList.value = JSON.parse(todoListLocalStorage)
+    console.log("LIST DARI LOCAL STORAGE", todoList.value)
+  }
+}
+
+fetchTodoListLocalStorage()
+
+const setTodoListLocalStorage = () => {
+  localStorage.setItem("todoList", JSON.stringify(todoList.value))
+}
+
 const listenerTodo = (todo: string) => {
   console.log("WOI ADA EMIT COK", todo)
   todoList.value.push({
@@ -23,13 +47,16 @@ const toggleTodoComplete = (index: number) => {
 }
 const toggleEditTodo = (index: number) => {
   todoList.value[index].isEditing = !todoList.value[index].isEditing
+
 }
 const updateTodo = (todo: string, index: number) => {
   todoList.value[index].todo = todo
   todoList.value[index].isEditing = false
+
 }
 const deleteTodo = (id: string) => {
   todoList.value = todoList.value.filter((todo) => todo.id !== id)
+
 }
 
 </script>
@@ -46,6 +73,11 @@ const deleteTodo = (id: string) => {
       <!-- When No Todo is showing -->
       <Icon icon="noto-v1:sad-but-relieved-face" class="icon" width="22" />
       <span>You don't have anything to do!</span>
+    </p>
+    <p v-if="todoCompleted && todoList.length > 0" class="todos-msg">
+      <!-- When All Todo is Completed -->
+      <Icon icon="noto-v1:smiling-face-with-sunglasses" class="icon" width="22" />
+      <span>You have completed all your todos!</span>
     </p>
   </main>
 </template>
