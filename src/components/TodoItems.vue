@@ -1,17 +1,17 @@
 <script setup>
-import { Icon } from '@iconify/vue';
+import { Icon } from "@iconify/vue";
 const props = defineProps({
     todo: {
         type: Object,
-        required: true,
-        // default: () => ({})
+        default: () => { },
     },
     index: {
         type: Number,
-        required: true,
-    }
+        default: 0,
+    },
 });
-defineEmits(['toggle-complete', 'edit-todo', 'update-todo', 'delete-todo']);
+
+defineEmits(["edit-todo", "update-todo", "toggle-complete", "delete-todo"]);
 </script>
 
 <template>
@@ -19,21 +19,22 @@ defineEmits(['toggle-complete', 'edit-todo', 'update-todo', 'delete-todo']);
         <input type="checkbox" :checked="todo.isCompleted" @input="$emit('toggle-complete', index)" />
         <div class="todo">
             <input v-if="todo.isEditing" type="text" :value="todo.todo"
-                @input="$emit('update-todo', $event.target.value, index)" />
-            <span v-else :class="{ 'completed-todo': todo.isCompleted }">
+                @change="$emit('update-todo', $event.target.value, index)" />
+            <span v-else :class="{
+                'completed-todo': todo.isCompleted,
+            }">
                 {{ todo.todo }}
             </span>
         </div>
         <div class="todo-actions">
-            <Icon v-if="todo.isEditing" icon="ph:check-circle" class="icon" color="green" width="22"
+            <Icon v-if="todo.isEditing" icon="ph:check-circle" class="icon check-icon" color="41b080" width="22"
                 @click="$emit('edit-todo', index)" />
-            <Icon v-else icon="ph:pencil-fill" class="icon" color="green" width="22" @click="$emit('edit-todo', index)" />
-            <Icon icon="ph:trash" class="icon" color="#F95E5E" width="22" @click="$emit('delete-todo', todo.id)" />
+            <Icon v-else icon="ph:pencil-fill" class="icon edit-icon" color="41b080" width="22"
+                @click="$emit('edit-todo', index)" />
+            <Icon icon="ph:trash" class="icon trash-icon" color="f95e5e" width="22" @click="$emit('delete-todo', todo)" />
         </div>
     </li>
 </template>
-
-
 
 <style lang="scss" scoped>
 li {
